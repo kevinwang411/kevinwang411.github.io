@@ -1,0 +1,101 @@
+
+<% def calc_gain(bets_list) %>
+  <% gain = 0 %>
+    <% if bets_list.size != 0 %>
+      <% bets_list.each do |bet| %>
+        <% if bet.outcome == 'w' %>
+          <% if bet.odds.to_f > 0 %>
+            <% gain = gain + (bet.odds.to_f/100)*bet.units.to_i %>
+          <% else %>
+            <% gain = gain + (-10000/bet.odds.to_f)*bet.units.to_i %>
+          <% end %>
+        <% elsif bet.outcome == 'l' %>
+          <% gain = gain - bet.units.to_i %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% return gain %>      
+<% end %>
+
+<h4>Username: <%= @current_user.username %></h4>
+<a href='/logout' class="btn btn-danger">Logout</a>
+
+
+<h1>Home Page</h1>
+<a href = "/bets/new"> Add bet </a>
+<br>
+<br>
+<h1>Summary</h1>
+<table class="table table-bordered">
+  <thead>
+    <th>Bet Type</th>
+    <th>Total Bets</th>
+    <th>Net Gain</th>
+  </thead>
+  <tr>
+    <td>All</td>
+    <td> <%= @user_bets.size %> </td>
+    <td> <%= calc_gain(@user_bets) %> </td>
+  </tr>
+  <tr>
+    <td>O/U</td>
+    <td> <%= @user_bets.where(bet_type: 'O/U').size %> </td>
+    <td> <%= calc_gain(@user_bets.where(bet_type: 'O/U')) %> </td>
+  </tr>
+  <tr>
+    <td>ML</td>
+    <td> <%= @user_bets.where(bet_type: 'ML').size %> </td>
+    <td> <%= calc_gain(@user_bets.where(bet_type: 'ML')) %> </td>
+  </tr>
+  <tr>
+    <td>RL</td>
+    <td> <%= @user_bets.where(bet_type: 'RL').size %> </td>
+    <td> <%= calc_gain(@user_bets.where(bet_type: 'RL')) %> </td>
+  </tr>
+  <tr>
+    <td>F5 ML</td>
+    <td> <%= @user_bets.where(bet_type: 'F5_ML').size %> </td>
+    <td> <%= calc_gain(@user_bets.where(bet_type: 'F5_ML')) %> </td>
+  </tr>
+  <tr>
+    <td>F5 RL</td>
+    <td> <%=  @user_bets.where(bet_type: 'F5_RL').size %> </td>
+    <td> <%= calc_gain(@user_bets.where(bet_type: 'F5_RL')) %> </td>
+  </tr>
+  <tr>
+    <td>Other</td>
+    <td> <%= @user_bets.where(bet_type: 'Other').size %> </td>
+    <td> <%= calc_gain(@user_bets.where(bet_type: 'Other')) %> </td>
+  </tr>
+  <tr>
+    
+  </tr>
+</table>
+<br>
+<h4>Bets Pending Result</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Game</th>
+      <th>Bet type</th>
+      <th>Bet</th>
+      <th>Update!</th>
+    </tr>
+  </thead>
+  <% @user_bets.each do |bet| %>
+    <% if bet.outcome == nil %>
+      <tr>
+        <td><%= bet.date %></td>
+        <td><%= bet.road_team %> @ <%= bet.home_team %></td>
+        <td><%= bet.bet_type %></td>
+        <td><%= bet.bet_n %></td>
+        <td> 
+       <a href='bets/<%= bet.id %>'> Update Result!</a>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<a href = "/bets/all"> Log </a>

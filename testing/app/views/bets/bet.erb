@@ -1,0 +1,55 @@
+<% def calc_gain(bet) %>
+  <% gain = 0 %>
+    <% if bet.outcome == 'w' %>
+      <% if bet.odds.to_f > 0 %>
+        <% gain = gain + (bet.odds.to_f/100)*bet.units.to_i %>
+      <% else %>
+        <% gain = gain + (-10000/bet.odds.to_f)*bet.units.to_i %>
+      <% end %>
+    <% elsif bet.outcome == 'l' %>
+      <% gain = gain - bet.units.to_i %>
+    <% end %>
+  <% return gain %>      
+<% end %>
+
+
+<div id="update_bet">
+  <h1>Update Bet</h1>
+  Date: <%= @bet.date %>
+  <br>
+  Game: <%= @bet.road_team %> @ <%= @bet.home_team %>
+  <br>
+  Bet Type: <%= @bet.bet_type %>
+  <br>
+  Bet: <%= @bet.bet_n %>
+  <br>
+  Odds: <%= @bet.odds %>
+  <br>
+  Units: <%= @bet.units %>
+  <br>
+  Reasoning: <br> <%= @bet.reasoning %>
+  <br>
+  <% if @bet.outcome %>
+    Outcome:  <%= @bet.outcome %>
+    <br>
+    Units Gained: <%= calc_gain(@bet) %>
+  <% else %>
+    <form method="POST" action = "/bets/<%= @bet.id %>" id="bet_update_form">
+      <div class="form-group">
+        <label for="outcome">Outcome:</label>
+          Win: <input type="radio" name="outcome" value="w">
+          &nbsp;
+          Loss: <input type="radio" name="outcome" value="l">
+          &nbsp;
+          N/A: <input type="radio" name="outcome" value="na">
+          &nbsp;
+      </div>
+      <div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </form>
+  <% end %>
+</div>
+
+<a href="/"> Home </a>
+<a href="/bets/all"> Log </a>

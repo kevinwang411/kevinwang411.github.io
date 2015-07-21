@@ -1,0 +1,49 @@
+<div id="add_bet">
+    <h1>Add Bet</h1>
+    <form method="POST" action = "/bets/new" id="bet_form">
+      <div class="form-group">
+        <label for="date" >Date:</label>
+        <input type="date" name="date" id="date" required>
+      </div>
+      <div class="form-group">
+        <label for="home_team">Home team:</label>
+        <input type="text" id="home_team" name="home_team"class="form-control info-box" required>
+      </div>
+      <div class="form-group">
+        <label for="road_team">Road team:</label>
+        <input type="text" id="road_team" name="road_team"class="form-control info-box" required>
+      </div>
+      <div class="form-group">
+        <label for="bet_type">Bet Type:</label>
+        <select name="bet_type" id="bet_type" required>
+        <option value="O/U">O/U</option>
+        <option value="ML">ML</option>
+        <option value="RL">RL</option>
+        <option value="F5_ML">F5 ML</option>
+        <option value="F5_RL">F5 RL</option>
+        <option value="Other">Other</option>
+      </select>
+      </div>
+      <div class="form-group">
+        <label for="bet_n">Bet:</label>
+        <input type="text" id="bet_n" name="bet_n" class="form-control info-box" required>
+      </div>
+      <div class="form-group">
+        <label for="odds">Odds:</label>
+        <input type="integer" id="odds" name="odds" class="form-control info-box" required>
+      </div>
+      <div class="form-group">
+        <label for="units">Units:</label>
+        <input type="integer" id="units" name="units" class="form-control info-box" required>
+      </div>
+      <div class="form-group">
+        Reasoning:<br>
+        <textarea name='reasoning' id='reasoning'></textarea>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </form>
+  </div>
+
+<a href="/"> Back to Home </a>

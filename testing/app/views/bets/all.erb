@@ -1,0 +1,46 @@
+<% def calc_gain(bet) %>
+  <% gain = 0 %>
+    <% if bet.outcome == 'w' %>
+      <% if bet.odds.to_f > 0 %>
+        <% gain = gain + (bet.odds.to_f/100)*bet.units.to_i %>
+      <% else %>
+        <% gain = gain + (-10000/bet.odds.to_f)*bet.units.to_i %>
+      <% end %>
+    <% elsif bet.outcome == 'l' %>
+      <% gain = gain - bet.units.to_i %>
+    <% end %>
+  <% return gain %>      
+<% end %>
+
+<a href="/"> Return to Home </a>
+<h1>Bet Log</h1>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Game</th>
+      <th>Bet type</th>
+      <th>Bet</th>
+      <th>Odds</th>
+      <th>Units</th>
+      <th>Outcome</th>
+      <th>Units Gained</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <% @user_bets.reverse.each do |bet| %>
+    <% if bet.outcome != nil %>
+      <tr>
+        <td><%= bet.date %></td>
+        <td><%= bet.road_team %> @ <%= bet.home_team %></td>
+        <td><%= bet.bet_type %></td>
+        <td><%= bet.bet_n %></td>
+        <td><%= bet.odds %></td>
+        <td><%= bet.units %></td>
+        <td><%= bet.outcome %></td>
+        <td><%= calc_gain(bet) %></td>
+        <td><a href='./<%= bet.id %>'> link</a></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
